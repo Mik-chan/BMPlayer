@@ -43,7 +43,7 @@ public class BMSubtitles {
     }
     
     public init(url: URL, encoding: String.Encoding? = nil) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).async {[weak self] in
             do {
                 let string: String
                 if let encoding = encoding {
@@ -51,8 +51,7 @@ public class BMSubtitles {
                 } else {
                     string = try String(contentsOf: url)
                 }
-                
-                self.groups = BMSubtitles.parseSubRip(string) ?? []
+                self?.groups = BMSubtitles.parseSubRip(string) ?? []
             } catch {
                 print("| BMPlayer | [Error] failed to load \(url.absoluteString) \(error.localizedDescription)")
             }
@@ -98,7 +97,6 @@ public class BMSubtitles {
             
             var endString: NSString?
             scanner.scanUpToCharacters(from: .newlines, into: &endString)
-            
             
             var textString: NSString?
             scanner.scanUpTo("\r\n\r\n", into: &textString)
